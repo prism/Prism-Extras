@@ -95,6 +95,12 @@ $sql = 'SELECT * FROM prism_actions WHERE 1=1';
         }
         $sql .= buildOrLikeQuery('prism_actions.data',$matches);
     }
+    
+    // Data
+    if(!$peregrine->post->isEmpty('datas')){
+        $data = explode(",", $peregrine->post->getRaw('datas'));
+    	$sql .= buildOrLikeQuery('prism_actions.data',$data);
+    }
 
     // Blocks
     if(!$peregrine->post->isEmpty('blocks')){
