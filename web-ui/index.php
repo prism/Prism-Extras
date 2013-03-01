@@ -86,13 +86,20 @@ if(!$peregrine->post->isEmpty('username')){
                                             <input type="text" class="span4" placeholder="viveleroi" id="players" name="players" value="">
                                         </div>
                                     </div>
-                                </div>
-                                <div class="control-group">
+    							<div class="row">
+                                <div class="control-group span2">
                                     <label class="control-label" for="entities">Entities</label>
                                     <div class="controls">
-                                        <input type="text" class="span5" placeholder="sheep" id="entities" name="entities" value="">
+                                        <input type="text" class="span2" placeholder="sheep" id="entities" name="entities" value="">
                                     </div>
                                 </div>
+								<div class="control-group span3">
+                                    <label class="control-label" for="datas">Data</label>
+                                    <div class="controls">
+                                        <input type="text" class="span3" placeholder="/warp, 127.0.0.1" id="datas" name="datas" value="">
+                                    </div>
+                                </div>
+								</div>
                             </div>
                         </fieldset>
                         <fieldset class="span6">
