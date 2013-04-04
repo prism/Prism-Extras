@@ -141,20 +141,32 @@ $sql = 'SELECT * FROM prism_actions WHERE 1=1';
         }
     }
 
+    // set a hash of the conditions, to know if the result count has changed
+    $sql_hash = sha1($sql);
+
     // Count total records
     // This is much faster than using SQL_CALC_FOUND_ROWS
-    $total_results = 0;
-    if( !defined('WEB_UI_DEBUG') || ( defined('WEB_UI_DEBUG') && !WEB_UI_DEBUG ) ){
-        $count_sql = str_replace("SELECT *", "SELECT COUNT(id)", $sql);
-        $statement = $db->query($count_sql);
-        while($row = $statement->fetch()) {
-            $total_results = $row[0];
+    if( $sql_hash != $peregrine->session->getAlnum('sql_conditions_hash') ){
+        $total_results = 0;
+        if( !defined('WEB_UI_DEBUG') || ( defined('WEB_UI_DEBUG') && !WEB_UI_DEBUG ) ){
+            $count_sql = str_replace("SELECT *", "SELECT COUNT(id)", $sql);
+            $statement = $db->query($count_sql);
+            while($row = $statement->fetch()) {
+                $total_results = $row[0];
+            }
         }
+        $_SESSION['sql_conditions_hash'] = $sql_hash;
+        $_SESSION['last_query_total_results'] = $total_results;
+        $peregrine->refreshCage('session');
+    } else {
+        $total_results = $peregrine->session->getInt('last_query_total_results');
     }
 
 
 // Order by
-$sql .= ' ORDER BY id DESC';
+if( defined('SORT_TIME_DESC') && SORT_TIME_DESC ){
+    $sql .= ' ORDER BY id DESC';
+}
 
 $per_page = $peregrine->post->getInt('per_page');
 // Try to ensure it's somewhat sensible
@@ -167,7 +179,9 @@ $response = array(
     'total_results' => $total_results,
     'per_page' => $per_page,
     'pages' => ($total_results > 0 ? ceil($total_results / $per_page) : 0),
-    'curr_page' => $peregrine->post->getInt('curr_page')
+    'curr_page' => $peregrine->post->getInt('curr_page'),
+    'sql_hash' => $sql_hash,
+    'session_hash' => $peregrine->session->getAlnum('sql_conditions_hash')
 );
 
 

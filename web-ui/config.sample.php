@@ -26,6 +26,14 @@ define("MYSQL_PASSWORD", "");
 define("MYSQL_DATABASE", "minecraft");
 define("MYSQL_PORT", 3306);
 
+// Whether or not to sort records with the most recent at top.
+// If you often run searches that include a very large (50k+)
+// data set, you should disable this because it's very costly
+// in query time.
+// Example:
+//   Paginating 1.9 million results takes 26ms with this off
+//   It takes 7.8 seconds with it on.
+define("SORT_TIME_DESC", false);
 
 // ------------------------------------------
 // TIMEZONE
