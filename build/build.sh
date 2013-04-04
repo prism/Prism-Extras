@@ -30,10 +30,10 @@ cd ..
 zip -r Prism-WebUI-$gitvers.zip web-ui
 
 # send file to amazon bucket
-#s3cmd put --acl-public Prism-WebUI-$gitvers.zip s3://botsko/Prism/Prism-WebUI-$gitvers.zip
+s3cmd put --acl-public Prism-WebUI-$gitvers.zip s3://botsko/Prism/Prism-WebUI-$gitvers.zip
 
 # Remove the files
 cd ..
-#rm -rf Prism-Extras
+rm -rf Prism-Extras
 
 echo "BUILD COMPLETE"
