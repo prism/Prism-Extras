@@ -114,13 +114,21 @@ if(!$peregrine->post->isEmpty('username')){
                                 <div class="control-group">
                                     <label class="control-label" for="blocks">Blocks/Items</label>
                                     <div class="controls">
-                                        <input type="text" class="typeahead span5" name="blocks" id="blocks" placeholder="stone,dirt" />
+                                        <input type="text" class="typeahead span5" name="blocks" id="blocks" placeholder="stone,dirt or 1,3" />
                                     </div>
                                 </div>
-                                <div class="control-group">
-                                    <label class="control-label" for="time">Time Since</label>
-                                    <div class="controls">
-                                        <input type="text" class="span5" placeholder="1h" id="time" name="time" value="">
+                                <div class="row">
+                                    <div class="control-group span2">
+                                        <label class="control-label" for="after">After</label>
+                                        <div class="controls">
+                                            <input type="text" class="span2" placeholder="1h" id="after" name="after" value="">
+                                        </div>
+                                    </div>
+                                    <div class="control-group span3">
+                                        <label class="control-label" for="before">Before</label>
+                                        <div class="controls">
+                                            <input type="text" class="span3" placeholder="1h" id="before" name="before" value="">
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -158,7 +166,7 @@ if(!$peregrine->post->isEmpty('username')){
                                 </tr>
                             </thead>
                             <tbody>
-
+                                <tr><td colspan="6">Awaiting search.</td></tr>
                             </tbody>
                         </table>
                     </div>

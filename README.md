@@ -54,7 +54,7 @@ So please, *make a donation and make it easier for me to continue with these ama
 
 ## Features Overview
 
-- Prism tracks 60 (and growing) different player, entity, and world events.
+- Prism tracks 65 (and growing) different player, entity, and world events.
 - Multiple tools and commands let you see exactly what happened.
 - Rollback or restore events directly, or with a safer preview mode first.
 - Extremely configurable
@@ -71,7 +71,7 @@ So please, *make a donation and make it easier for me to continue with these ama
 
 ### Events and Lookup
 
-- Tracks 60+ player, entity, and world events.
+- Tracks 65+ player, entity, and world events.
 - Includes block changes, container access, item inserts/remove/pickups/drops, entity deaths, shearing, and a LOT more.
 - Related events tracked to causing player, like blocks falling, blocks detaching, trees growing, and much more.
 - Smart logging and rollback of important related data like sign text, sheep color, wolf owner, animal age, villager profession, etc
@@ -137,6 +137,14 @@ So please, *make a donation and make it easier for me to continue with these ama
 - A dev server with 512M RAM, 2.7Ghz dual core processor, 9k blocks from a tnt explosion restored in 1.4 seconds - 1467 milliseconds from command to rollback completion. Most common rollbacks on the same machine tend to take < 200ms to restore. Similar results on relatively equal machines from shared bukkit hosting companies during initial tests.
 
 
+### Supported Plugins 
+
+Here's a quick list of known plugins that use the Prism 1.5+ API in some form:
+
+- [DarkMythos](http://dev.bukkit.org/server-mods/darkmythos/ )
+- [OtherDrops](http://dev.bukkit.org/server-mods/otherdrops/)
+
+
        
 ## Get Help
 
@@ -160,7 +168,7 @@ Prism, designed with experience from using competing products on DHMC, and deali
 - mafoan, randox24, tacovan, nehocbelac, Shampoo123, cxmmy14, Palczynski, drac17, ollie2000, PGKxNIGHTMARE, allies333, DocVanNostrand, drfizzman123, 00benallen, rachaelriott, PheonixTamer, YeaItsMe, Natman93, Brazter, sydney2005, rsleight, napalm1, Teh_Fishman, and plenty more from DHMC (*Live Testers on DHMC*)
 - WorldEdit block logging [#1](https://github.com/LogBlock/LogBlock/tree/master/src/main/java/de/diddiz/worldedit ) based on work by [Ammaraskar](https://github.com/ammaraskar )
 - [Metrics](http://mcstats.org) class Copyright 2011 Tyler Blair. All rights reserved.
-- Artwork by [LegendarySoldier](http://legendary-soldier.deviantart.com/
+- Artwork by [LegendarySoldier](http://legendary-soldier.deviantart.com/)
 
 
 ## COMMENTING?

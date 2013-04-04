@@ -19,6 +19,38 @@ class Prism {
 
 
     /**
+     * @param $timestring
+     * @return array
+     */
+    public function getTimestampFromString( $timestring ){
+        preg_match_all('/([0-9]+)(s|h|m|d|w)/', $timestring, $matches);
+        $timeAgo = array();
+        if($matches){
+            if(is_array($matches[0])){
+                foreach($matches[0] as $key => $match){
+                    if($matches[2][$key] == "s"){
+                        $timeAgo[] = $matches[1][$key] . " seconds";
+                    }
+                    if($matches[2][$key] == "m"){
+                        $timeAgo[] = $matches[1][$key] . " minutes";
+                    }
+                    if($matches[2][$key] == "h"){
+                        $timeAgo[] = $matches[1][$key] . " hours";
+                    }
+                    if($matches[2][$key] == "d"){
+                        $timeAgo[] = $matches[1][$key] . " days";
+                    }
+                    if($matches[2][$key] == "w"){
+                        $timeAgo[] = $matches[1][$key] . " weeks";
+                    }
+                }
+            }
+        }
+        return $timeAgo;
+    }
+
+
+    /**
      *
      */
     public function getActionTypes(){

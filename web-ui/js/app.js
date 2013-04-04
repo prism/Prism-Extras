@@ -91,7 +91,7 @@ $(function(){
             }
         }, 'json');
         return false;
-    }).trigger('submit');
+    });
 
     $('#submit').click(function(){
         $('#curr_page').val( 1 );

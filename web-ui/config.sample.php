@@ -7,6 +7,7 @@ require_once('libs/Peregrine.php');
 require_once('libs/Auth.php');
 require_once('libs/Prism.php');
 define('WEB_UI_VERSION', 'nightly');
+define('WEB_UI_DEBUG', false);
 
 
 // REMEMBER: Rename this file to "config.php".

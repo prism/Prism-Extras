@@ -95,7 +95,7 @@ $sql = 'SELECT * FROM prism_actions WHERE 1=1';
         }
         $sql .= buildOrLikeQuery('prism_actions.data',$matches);
     }
-    
+
     // Data
     if(!$peregrine->post->isEmpty('keyword')){
         $data = explode(",", $peregrine->post->getRaw('keyword'));
@@ -108,52 +108,48 @@ $sql = 'SELECT * FROM prism_actions WHERE 1=1';
         $match = array();
         foreach($blocks as $block){
             if(!empty($block)){
-                $key = $prism->getBlockIdFromName($block);
-                $ids = explode(':', $key);
-                $match[] = 'block_id":'.$ids[0].',"block_subid":'.$ids[1];
-            }
-        }
-        $sql .= buildOrLikeQuery('prism_actions.data',$match);
-    }
-
-    // Timeframe
-    if(!$peregrine->post->isEmpty('time')){
-        preg_match_all('/([0-9]+)(s|h|m|d|w)/', $peregrine->post->getAlnum('time'), $matches);
-        $timeAgo = array();
-        if($matches){
-            if(is_array($matches[0])){
-                foreach($matches[0] as $key => $match){
-                    if($matches[2][$key] == "s"){
-                        $timeAgo[] = $matches[1][$key] . " seconds";
-                    }
-                    if($matches[2][$key] == "m"){
-                        $timeAgo[] = $matches[1][$key] . " minutes";
-                    }
-                    if($matches[2][$key] == "h"){
-                        $timeAgo[] = $matches[1][$key] . " hours";
-                    }
-                    if($matches[2][$key] == "d"){
-                        $timeAgo[] = $matches[1][$key] . " days";
-                    }
-                    if($matches[2][$key] == "w"){
-                        $timeAgo[] = $matches[1][$key] . " weeks";
+                if( strpos($block,':') === false && !ctype_digit($block) ){
+                    $key = $prism->getBlockIdFromName($block);
+                } else {
+                    $key = $block;
+                    if( strpos($block,':') === false ){
+                        $key .= ':0';
                     }
                 }
+                $ids = explode(':', $key);
+                $match[] = '(block_id = '.$ids[0].' AND block_subid = '.$ids[1].')';
             }
         }
+        $sql .= ' AND ('.implode(' OR ', $match).')';
+    }
+
+    // After
+    if(!$peregrine->post->isEmpty('after')){
+        $timeAgo = $prism->getTimestampFromString($peregrine->post->getAlnum('after'));
         if(!empty($timeAgo)){
             $beforeDate = date("Y-m-d H:i:s", strtotime( implode(" ", $timeAgo) . " ago" ));
-            $sql .= ' AND prism_actions.action_time >=  "'.$beforeDate.'"';
+            $sql .= ' AND prism_actions.action_time >= "'.$beforeDate.'"';
+        }
+    }
+
+    // Before
+    if(!$peregrine->post->isEmpty('before')){
+        $timeAgo = $prism->getTimestampFromString($peregrine->post->getAlnum('before'));
+        if(!empty($timeAgo)){
+            $beforeDate = date("Y-m-d H:i:s", strtotime( implode(" ", $timeAgo) . " ago" ));
+            $sql .= ' AND prism_actions.action_time <= "'.$beforeDate.'"';
         }
     }
 
     // Count total records
     // This is much faster than using SQL_CALC_FOUND_ROWS
     $total_results = 0;
-    $count_sql = str_replace("SELECT *", "SELECT COUNT(id)", $sql);
-    $statement = $db->query($count_sql);
-    while($row = $statement->fetch()) {
-        $total_results = $row[0];
+    if( !defined('WEB_UI_DEBUG') || ( defined('WEB_UI_DEBUG') && !WEB_UI_DEBUG ) ){
+        $count_sql = str_replace("SELECT *", "SELECT COUNT(id)", $sql);
+        $statement = $db->query($count_sql);
+        while($row = $statement->fetch()) {
+            $total_results = $row[0];
+        }
     }
 
 
@@ -178,6 +174,13 @@ $response = array(
 // Limit
 $offset = ($response['curr_page']-1)*$response['per_page'];
 $sql .= ' LIMIT '.$offset.','.$response['per_page'];
+
+
+if( defined('WEB_UI_DEBUG') && WEB_UI_DEBUG ){
+    print $sql;
+    exit;
+}
+
 
 $statement = $db->query($sql);
 $statement->setFetchMode(PDO::FETCH_ASSOC);
