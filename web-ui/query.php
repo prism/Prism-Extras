@@ -206,9 +206,11 @@ if($statement->rowCount()){
         if( $row['block_id'] > 0 || $row['old_block_id'] > 0 ){
             $key = $row['old_block_id'] . ':' . $row['old_block_subid'];
             $newkey = $row['block_id'] . ':' . $row['block_subid'];
-            $row['data'] = $blocks[$newkey];
-            if( $row['old_block_id'] > 0 ){
-                $row['data'] .= ' replaced ' . $blocks[$key];
+            if( array_key_exists($newkey, $blocks) ){
+                $row['data'] = $blocks[$newkey];
+                if( $row['old_block_id'] > 0 && array_key_exists($key, $blocks) ){
+                    $row['data'] .= ' replaced ' . $blocks[$key];
+                }
             }
         }
 
