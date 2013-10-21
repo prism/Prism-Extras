@@ -125,18 +125,32 @@ $sql = 'SELECT * FROM prism_actions WHERE 1=1';
 
     // After
     if(!$peregrine->post->isEmpty('after')){
-        $timeAgo = $prism->getTimestampFromString($peregrine->post->getAlnum('after'));
-        if(!empty($timeAgo)){
-            $beforeDate = date("Y-m-d H:i:s", strtotime( implode(" ", $timeAgo) . " ago" ));
-            $sql .= ' AND prism_actions.action_time >= "'.$beforeDate.'"';
+        $timeInput = $peregrine->post->getQueryString('after');
+        if (strpos($timeInput, '-') !== FALSE) {
+            $afterDate = $peregrine->post->getDate('after','Y-m-d H:i:s');
+        } else {
+            $timeAgo = $prism->getTimestampFromString($peregrine->post->getAlnum('after'));
+            if(!empty($timeAgo)){
+                $afterDate = date("Y-m-d H:i:s", strtotime( implode(" ", $timeAgo) . " ago" ));
+            }
+        }
+        if(!empty($afterDate)){
+            $sql .= ' AND prism_actions.action_time >= "'.$afterDate.'"';
         }
     }
 
     // Before
     if(!$peregrine->post->isEmpty('before')){
-        $timeAgo = $prism->getTimestampFromString($peregrine->post->getAlnum('before'));
-        if(!empty($timeAgo)){
-            $beforeDate = date("Y-m-d H:i:s", strtotime( implode(" ", $timeAgo) . " ago" ));
+        $timeInput = $peregrine->post->getQueryString('before');
+        if (strpos($timeInput, '-') !== FALSE) {
+            $beforeDate = $peregrine->post->getDate('before','Y-m-d H:i:s');
+        } else {
+            $timeAgo = $prism->getTimestampFromString($peregrine->post->getAlnum('before'));
+            if(!empty($timeAgo)){
+                $beforeDate = date("Y-m-d H:i:s", strtotime( implode(" ", $timeAgo) . " ago" ));
+            }
+        }
+        if(!empty($beforeDate)){
             $sql .= ' AND prism_actions.action_time <= "'.$beforeDate.'"';
         }
     }
