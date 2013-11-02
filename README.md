@@ -172,7 +172,7 @@ Here's a quick list of known plugins that use the Prism 1.5+ API in some form:
 - [OtherDrops](http://dev.bukkit.org/server-mods/otherdrops/)
 - [AsyncWorldedit](http://dev.bukkit.org/server-mods/async_worldedit/ )
 - [MCPainter](http://dev.bukkit.org/server-mods/mcpainter/)
-
+- [BlockSaver](http://dev.bukkit.org/bukkit-plugins/blocksaver/)
 
        
 ## Get Help
@@ -199,9 +199,3 @@ Prism, designed with experience from using competing products on DHMC, and deali
 - [Metrics](http://mcstats.org) class Copyright 2011 Tyler Blair. All rights reserved.
 - Artwork by [LegendarySoldier](http://legendary-soldier.deviantart.com/)
 
-
-## COMMENTING?
-
-- Do NOT post error logs here. We will delete them.
-- **Instead**, make [a paste](http://pste.me) with and show us in [IRC - irc.esper.net #prism](http://webchat.esper.net/?channels=prism) or [file a bug](https://snowy-evening.com/botsko/prism/ )
-- If you didn't read the [Troubleshooting](http://discover-prism.com/wiki/view/troubleshooting/) page, we'll delete the comment.
