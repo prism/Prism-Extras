@@ -204,7 +204,7 @@ class CageBase {
 	 * @param mixed $count_as_empty
 	 * @return boolean
 	 */
-	public function isEmpty($key, $count_as_empty = false){
+	public function isEmpty($key, $count_as_empty = false, $exclude_zero = false ){
 		if (!$this->keyExists($key)) {
 			return true;
 		} else {
@@ -214,7 +214,9 @@ class CageBase {
 			}
 			$val = $count_as_empty ? str_replace($count_as_empty, '', $val) : $val;
 			$val = trim($val);
-			return empty($val);
+            if( $exclude_zero ) return empty($val);
+            if( $val === '' ) return true;
+            return false;
 		}
 	}
 
