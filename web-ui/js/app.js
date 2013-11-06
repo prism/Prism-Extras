@@ -1,10 +1,54 @@
-$(function(){
-    $('#frm-search').submit(function(){
-        $('.table tbody td').remove();
-        $('#loading').show();
+
+prismWebUi = function(){
+
+    var form = $('#frm-search');
+    var tbody = $('.table tbody');
+    var loading = $('#loading');
+    var ol = $('.meta ol');
+    var curr_page_li = $('#curr_page');
+
+    $('#submit').click(function(){
+        curr_page_li.val( 1 );
+    });
+
+    $('#set-per-page').change(function(){
+        $('#per_page').val( $(this).val() );
+        form.submit();
+    })
+
+    ol.on('click', 'li a', function(e){
+        e.preventDefault();
+        curr_page_li.val( $(this).data('page') );
+        form.submit();
+        return false;
+    });
+
+    $('.modal .btn').click(function(){
+        $('#frm-login').submit();
+        return false;
+    });
+
+    // Util methods
+    ajaxStart = function(){
+        loading.show();
+    }
+    ajaxStop = function(){
+        loading.hide();
+    }
+    clearTable = function(){
+        tbody.html('');
+    }
+
+
+    // Event handlers
+    handleSubmit = function(){
+
+        ajaxStart();
+        clearTable();
+
         var jqXHR = $.post('query.php', $(this).serialize(), function(resp){
             if(resp.results.length > 0){
-                $('#loading').hide();
+                ajaxStop();
                 for(r in resp.results){
 
                     var data = resp.results[r].data;
@@ -24,9 +68,9 @@ $(function(){
                     tr += '<td>'+resp.results[r].player+'</td>';
                     tr += '<td>'+(data === null ? '' : data)+'</td>';
                     tr += '<td>'+resp.results[r].epoch+'</td>';
-                    tr += '</tr>'
+                    tr += '</tr>';
 
-                    $('.table tbody').append(tr);
+                    tbody.append(tr);
                 }
 
                 // Set meta
@@ -35,7 +79,6 @@ $(function(){
                 $('.meta span:nth-child(3)').text(resp.pages);
 
                 // Pagination
-                var ol = $('.meta ol');
                 ol.empty();
 
                 if(resp.pages > 1 && resp.curr_page > 1){
@@ -87,8 +130,8 @@ $(function(){
                 }
 
             } else {
-                $('#loading').hide();
-                $('table tbody').append('<tr><td colspan="7">No results found. Try again.</td></tr>')
+                ajaxStop();
+                tbody.append('<tr><td colspan="7">No results found. Try again.</td></tr>')
             }
         }, 'json');
 
@@ -100,35 +143,34 @@ $(function(){
             msg += "<p><strong>HTTP Status:</strong> "+jqXHR.status+" "+jqXHR.statusText+"</p>";
             msg += "<p><strong>Response Text:</strong> "+jqXHR.responseText+"</p>";
 
-            $('#loading').hide();
-            $('table tbody').append('<tr><td colspan="7">'+msg+'</td></tr>')
+            ajaxStop();
+            tbody.append('<tr><td colspan="7">'+msg+'</td></tr>')
 
         });
 
         return false;
-    });
 
-    $('#submit').click(function(){
-        $('#curr_page').val( 1 );
-    });
+    }
 
-    $('#set-per-page').change(function(){
-        $('#per_page').val( $(this).val() );
-        $('#frm-search').submit();
-    })
 
-    $('.meta ol').delegate('li a', 'click', function(e){
-        e.preventDefault();
-        $('#curr_page').val( $(this).data('page') );
-        $('#frm-search').submit();
-        return false;
-    });
+    // Event Listeners
+    form.submit(handleSubmit);
 
-    $('.modal .btn').click(function(){
-        $('#frm-login').submit();
-        return false;
-    });
+
+    // Return
+    return {
+
+        // @todo future api methods
+
+    }
+}
+
+
+$(function(){
+    var prism = prismWebUi();
 });
+
+
 
 /* Multi-select type-ahead */
 function extractor(query) {
