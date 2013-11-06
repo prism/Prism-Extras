@@ -2,63 +2,27 @@
 
 require_once('config.php');
 require_once('libs/Bootstrap.php');
+require_once('libs/QueryBuilder.php');
 
+// Authentication token
 $token = $peregrine->session->getUsername('username').$peregrine->server->getRaw('REMOTE_ADDR');
 if(!$auth->checkToken($token,$peregrine->session->getRaw('token'))){
     exit;
 }
 
-// Build our query
-$select = 'SELECT id, epoch, action, player, world, x, y, z, block_id, block_subid, old_block_id, old_block_subid, data ';
-$sql = '
-    FROM prism_data
-    INNER JOIN prism_players p ON p.player_id = prism_data.player_id
-    INNER JOIN prism_actions a ON a.action_id = prism_data.action_id
-    INNER JOIN prism_worlds w ON w.world_id = prism_data.world_id
-    LEFT JOIN prism_data_extra ex ON ex.data_id = prism_data.id
-     WHERE 1=1 ';
-
-    function buildOrQuery( $fieldname, $values ){
-        $where = "";
-        if(!empty($values)){
-            $where .= " AND (";
-            $c = 1;
-            foreach($values as $val){
-                if(empty($val)) continue;
-                if($c > 1 && $c <= count($values)){
-                    $where .= " OR ";
-                }
-                $where .= $fieldname . " = '".$val."'";
-                $c++;
-            }
-            $where .= ")";
-        }
-        return $where;
-    }
-
-    function buildOrLikeQuery( $fieldname, $values ){
-        $where = "";
-        if(!empty($values)){
-            $where .= " AND (";
-            $c = 1;
-            foreach($values as $val){
-                if(empty($val)) continue;
-                if($c > 1 && $c <= count($values)){
-                    $where .= " OR ";
-                }
-                $where .= $fieldname . " LIKE '%".$val."%'";
-                $c++;
-            }
-            $where .= ")";
-        }
-        return $where;
-    }
-
+// Build query
+$qb = new QueryBuilder();
+$qb->select('id, epoch, action, player, world, x, y, z, block_id, block_subid, old_block_id, old_block_subid, data');
+$qb->from('prism_data','d');
+$qb->join('INNER JOIN prism_players p ON p.player_id = d.player_id');
+$qb->join('INNER JOIN prism_actions a ON a.action_id = d.action_id');
+$qb->join('INNER JOIN prism_worlds w ON w.world_id = d.world_id');
+$qb->join('LEFT JOIN prism_data_extra ex ON ex.data_id = d.id');
 
     // World
     if(!$peregrine->post->isEmpty('world')){
         $world = explode(",", $peregrine->post->getUsername('world'));
-        $sql .= buildOrQuery('w.world',$world);
+        $qb->where( QueryBuilder::buildOrQuery('w.world',$world) );
     }
 
     // Coordinates
@@ -68,27 +32,27 @@ $sql = '
         $z = $peregrine->post->getInt('z');
         if(!$peregrine->post->isEmpty('radius')){
             $radius = $peregrine->post->getInt('radius');
-            $sql .= ' AND ( prism_data.x BETWEEN '.($x-$radius) . ' AND '.($x+$radius).' )';
-            $sql .= ' AND ( prism_data.y BETWEEN '.($y-$radius) . ' AND '.($y+$radius).' )';
-            $sql .= ' AND ( prism_data.z BETWEEN '.($z-$radius) . ' AND '.($z+$radius).' )';
+            $qb->where( '( prism_data.x BETWEEN '.($x-$radius) . ' AND '.($x+$radius).' )' );
+            $qb->where( '( prism_data.x BETWEEN '.($x-$radius) . ' AND '.($x+$radius).' )' );
+            $qb->where( '( prism_data.z BETWEEN '.($z-$radius) . ' AND '.($z+$radius).' )' );
         } else {
-            $sql .= ' AND prism_data.x = '.$x;
-            $sql .= ' AND prism_data.y = '.$y;
-            $sql .= ' AND prism_data.z = '.$z;
+            $qb->where( 'prism_data.x = '.$x );
+            $qb->where( 'prism_data.y = '.$y );
+            $qb->where( 'prism_data.z = '.$z );
         }
     }
 
     // Actions
     if(!$peregrine->post->isEmpty('actions')){
         $actions = explode(",", $peregrine->post->getRaw('actions'));
-        $sql .= buildOrQuery('a.action',$actions);
+        $qb->where( QueryBuilder::buildOrQuery('a.action',$actions) );
     }
-    $sql .= ' AND a.action NOT LIKE "%prism%"';
+    $qb->where( 'a.action NOT LIKE "%prism%"' );
 
     // Players
     if(!$peregrine->post->isEmpty('players')){
         $users = explode(",", $peregrine->post->getRaw('players'));
-        $sql .= buildOrQuery('p.player',$users);
+        $qb->where( QueryBuilder::buildOrQuery('p.player',$users) );
     }
 
     // Entities
@@ -100,13 +64,13 @@ $sql = '
                 $matches[] = 'entity_name":"'.$e;
             }
         }
-        $sql .= buildOrLikeQuery('ex.data',$matches);
+        $qb->where( QueryBuilder::buildOrLikeQuery('ex.data',$matches) );
     }
 
     // Data
     if(!$peregrine->post->isEmpty('keyword')){
         $data = explode(",", $peregrine->post->getRaw('keyword'));
-    	$sql .= buildOrLikeQuery('ex.data',$data);
+        $qb->where( QueryBuilder::buildOrLikeQuery('ex.data',$data) );
     }
 
     // Blocks
@@ -127,22 +91,22 @@ $sql = '
                 $match[] = '(block_id = '.$ids[0].' AND block_subid = '.$ids[1].')';
             }
         }
-        $sql .= ' AND ('.implode(' OR ', $match).')';
+        $qb->where( '('.implode(' OR ', $match).')' );
     }
 
     // After
     if(!$peregrine->post->isEmpty('after')){
         $timeInput = $peregrine->post->getQueryString('after');
         if (strpos($timeInput, '-') !== FALSE) {
-            $afterDate = $peregrine->post->getDate('after','Y-m-d H:i:s');
+            $afterDate = strtotime($peregrine->post->getDate('after','Y-m-d H:i:s'));
         } else {
             $timeAgo = $prism->getTimestampFromString($peregrine->post->getAlnum('after'));
             if(!empty($timeAgo)){
-                $afterDate = date("Y-m-d H:i:s", strtotime( implode(" ", $timeAgo) . " ago" ));
+                $afterDate = strtotime( implode(" ", $timeAgo) . " ago");
             }
         }
         if(!empty($afterDate)){
-            $sql .= ' AND prism_data.epoch >= "'.strtotime($afterDate).'"';
+            $qb->where( 'd.epoch >= "'.$afterDate.'"' );
         }
     }
 
@@ -150,28 +114,29 @@ $sql = '
     if(!$peregrine->post->isEmpty('before')){
         $timeInput = $peregrine->post->getQueryString('before');
         if (strpos($timeInput, '-') !== FALSE) {
-            $beforeDate = $peregrine->post->getDate('before','Y-m-d H:i:s');
+            $beforeDate = strtotime($peregrine->post->getDate('before','Y-m-d H:i:s'));
         } else {
             $timeAgo = $prism->getTimestampFromString($peregrine->post->getAlnum('before'));
             if(!empty($timeAgo)){
-                $beforeDate = date("Y-m-d H:i:s", strtotime( implode(" ", $timeAgo) . " ago" ));
+                $beforeDate = strtotime( implode(" ", $timeAgo) . " ago" );
             }
         }
         if(!empty($beforeDate)){
-            $sql .= ' AND prism_data.epoch <= "'.strtotime($beforeDate).'"';
+            $qb->where( 'd.epoch >= "'.$beforeDate.'"' );
         }
     }
 
     // set a hash of the conditions, to know if the result count has changed
-    $sql_hash = sha1($sql);
+    $sql_hash = sha1($qb->getQuery());
 
     // Count total records
     // This is much faster than using SQL_CALC_FOUND_ROWS
     if( $sql_hash != $peregrine->session->getAlnum('sql_conditions_hash') ){
         $total_results = 0;
         if( !defined('WEB_UI_DEBUG') || ( defined('WEB_UI_DEBUG') && !WEB_UI_DEBUG ) ){
-            $count_sql = "SELECT COUNT(*)" . $sql;
-            $statement = $db->query($count_sql);
+            $total_qb = clone $qb;
+            $total_qb->select('COUNT(*)');
+            $statement = $db->query( $total_qb->getQuery() );
             while($row = $statement->fetch()) {
                 $total_results = $row[0];
             }
@@ -186,7 +151,7 @@ $sql = '
 
 // Order by
 if( defined('SORT_TIME_DESC') && SORT_TIME_DESC ){
-    $sql .= ' ORDER BY id DESC';
+    $qb->order('id DESC');
 }
 
 $per_page = $peregrine->post->getInt('per_page');
@@ -208,10 +173,10 @@ $response = array(
 
 // Limit
 $offset = ($response['curr_page']-1)*$response['per_page'];
-$sql .= ' LIMIT '.$offset.','.$response['per_page'];
+$qb->limit($offset,$response['per_page']);
 
 // Merge sql
-$sql = $select . $sql;
+$sql = $qb->getQuery();
 
 if( defined('WEB_UI_DEBUG') && WEB_UI_DEBUG ){
     print $sql;
