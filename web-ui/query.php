@@ -150,8 +150,8 @@ $qb->join('LEFT JOIN prism_data_extra ex ON ex.data_id = d.id');
 
 
 // Order by
-if( defined('SORT_TIME_DESC') && SORT_TIME_DESC ){
-    $qb->order('id DESC');
+if( defined('DEFAULT_ORDER_BY') && DEFAULT_ORDER_BY != '' ){
+    $qb->order(DEFAULT_ORDER_BY);
 }
 
 $per_page = $peregrine->post->getInt('per_page');
@@ -183,6 +183,10 @@ if( defined('WEB_UI_DEBUG') && WEB_UI_DEBUG ){
     exit;
 }
 
+$date_format = 'Y-m-d H:i:s';
+if( defined('DEFAULT_DATE_FORMAT') && DEFAULT_DATE_FORMAT ){
+    $date_format = DEFAULT_DATE_FORMAT;
+}
 
 $statement = $db->query($sql);
 $statement->setFetchMode(PDO::FETCH_ASSOC);
@@ -201,6 +205,8 @@ if($statement->rowCount()){
                 }
             }
         }
+
+        $row['epoch'] = date($date_format, $row['epoch']);
 
         if(strpos($row['data'], "{") !== false){
 
