@@ -167,7 +167,7 @@ if(!$peregrine->post->isEmpty('username')){
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr><td colspan="6">Awaiting search.</td></tr>
+                                <tr><td colspan="7">Awaiting search.</td></tr>
                             </tbody>
                         </table>
                     </div>

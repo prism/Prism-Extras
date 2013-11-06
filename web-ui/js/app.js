@@ -2,7 +2,7 @@ $(function(){
     $('#frm-search').submit(function(){
         $('.table tbody td').remove();
         $('#loading').show();
-        $.post('query.php', $(this).serialize(), function(resp){
+        var jqXHR = $.post('query.php', $(this).serialize(), function(resp){
             if(resp.results.length > 0){
                 $('#loading').hide();
                 for(r in resp.results){
@@ -88,9 +88,23 @@ $(function(){
 
             } else {
                 $('#loading').hide();
-                $('table tbody').append('<tr><td colspan="6">No results found. Try again.</td></tr>')
+                $('table tbody').append('<tr><td colspan="7">No results found. Try again.</td></tr>')
             }
         }, 'json');
+
+        jqXHR.fail(function(){
+
+            var msg = "<p><strong>Error returning results:</strong></p>";
+            msg += "<p>The Ajax request failed.</p>";
+            msg += "<p>Make sure WEB_UI_DEBUG is turned off in the config.php file. Otherwise, if you're unsure how to resolve this error please contact Prism support.</p>";
+            msg += "<p><strong>HTTP Status:</strong> "+jqXHR.status+" "+jqXHR.statusText+"</p>";
+            msg += "<p><strong>Response Text:</strong> "+jqXHR.responseText+"</p>";
+
+            $('#loading').hide();
+            $('table tbody').append('<tr><td colspan="7">'+msg+'</td></tr>')
+
+        });
+
         return false;
     });
 
