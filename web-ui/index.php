@@ -157,6 +157,7 @@ if(!$peregrine->post->isEmpty('username')){
                         <table class="table">
                             <thead>
                                 <tr>
+                                    <th>ID</th>
                                     <th>World</th>
                                     <th>Loc</th>
                                     <th>Action</th>

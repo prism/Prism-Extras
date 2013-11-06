@@ -9,7 +9,14 @@ if(!$auth->checkToken($token,$peregrine->session->getRaw('token'))){
 }
 
 // Build our query
-$sql = 'SELECT * FROM prism_actions WHERE 1=1';
+$select = 'SELECT id, epoch, action, player, world, x, y, z, block_id, block_subid, old_block_id, old_block_subid, data ';
+$sql = '
+    FROM prism_data
+    INNER JOIN prism_players p ON p.player_id = prism_data.player_id
+    INNER JOIN prism_actions a ON a.action_id = prism_data.action_id
+    INNER JOIN prism_worlds w ON w.world_id = prism_data.world_id
+    LEFT JOIN prism_data_extra ex ON ex.data_id = prism_data.id
+     WHERE 1=1 ';
 
     function buildOrQuery( $fieldname, $values ){
         $where = "";
@@ -51,7 +58,7 @@ $sql = 'SELECT * FROM prism_actions WHERE 1=1';
     // World
     if(!$peregrine->post->isEmpty('world')){
         $world = explode(",", $peregrine->post->getUsername('world'));
-        $sql .= buildOrQuery('prism_actions.world',$world);
+        $sql .= buildOrQuery('w.world',$world);
     }
 
     // Coordinates
@@ -61,27 +68,27 @@ $sql = 'SELECT * FROM prism_actions WHERE 1=1';
         $z = $peregrine->post->getInt('z');
         if(!$peregrine->post->isEmpty('radius')){
             $radius = $peregrine->post->getInt('radius');
-            $sql .= ' AND ( prism_actions.x BETWEEN '.($x-$radius) . ' AND '.($x+$radius).' )';
-            $sql .= ' AND ( prism_actions.y BETWEEN '.($y-$radius) . ' AND '.($y+$radius).' )';
-            $sql .= ' AND ( prism_actions.z BETWEEN '.($z-$radius) . ' AND '.($z+$radius).' )';
+            $sql .= ' AND ( prism_data.x BETWEEN '.($x-$radius) . ' AND '.($x+$radius).' )';
+            $sql .= ' AND ( prism_data.y BETWEEN '.($y-$radius) . ' AND '.($y+$radius).' )';
+            $sql .= ' AND ( prism_data.z BETWEEN '.($z-$radius) . ' AND '.($z+$radius).' )';
         } else {
-            $sql .= ' AND prism_actions.x = '.$x;
-            $sql .= ' AND prism_actions.y = '.$y;
-            $sql .= ' AND prism_actions.z = '.$z;
+            $sql .= ' AND prism_data.x = '.$x;
+            $sql .= ' AND prism_data.y = '.$y;
+            $sql .= ' AND prism_data.z = '.$z;
         }
     }
 
     // Actions
     if(!$peregrine->post->isEmpty('actions')){
         $actions = explode(",", $peregrine->post->getRaw('actions'));
-        $sql .= buildOrQuery('prism_actions.action_type',$actions);
+        $sql .= buildOrQuery('a.action',$actions);
     }
-    $sql .= ' AND prism_actions.action_type NOT LIKE "%prism%"';
+    $sql .= ' AND a.action NOT LIKE "%prism%"';
 
     // Players
     if(!$peregrine->post->isEmpty('players')){
         $users = explode(",", $peregrine->post->getRaw('players'));
-        $sql .= buildOrQuery('prism_actions.player',$users);
+        $sql .= buildOrQuery('p.player',$users);
     }
 
     // Entities
@@ -93,13 +100,13 @@ $sql = 'SELECT * FROM prism_actions WHERE 1=1';
                 $matches[] = 'entity_name":"'.$e;
             }
         }
-        $sql .= buildOrLikeQuery('prism_actions.data',$matches);
+        $sql .= buildOrLikeQuery('ex.data',$matches);
     }
 
     // Data
     if(!$peregrine->post->isEmpty('keyword')){
         $data = explode(",", $peregrine->post->getRaw('keyword'));
-    	$sql .= buildOrLikeQuery('prism_actions.data',$data);
+    	$sql .= buildOrLikeQuery('ex.data',$data);
     }
 
     // Blocks
@@ -135,7 +142,7 @@ $sql = 'SELECT * FROM prism_actions WHERE 1=1';
             }
         }
         if(!empty($afterDate)){
-            $sql .= ' AND prism_actions.action_time >= "'.$afterDate.'"';
+            $sql .= ' AND prism_data.epoch >= "'.strtotime($afterDate).'"';
         }
     }
 
@@ -151,7 +158,7 @@ $sql = 'SELECT * FROM prism_actions WHERE 1=1';
             }
         }
         if(!empty($beforeDate)){
-            $sql .= ' AND prism_actions.action_time <= "'.$beforeDate.'"';
+            $sql .= ' AND prism_data.epoch <= "'.strtotime($beforeDate).'"';
         }
     }
 
@@ -163,7 +170,7 @@ $sql = 'SELECT * FROM prism_actions WHERE 1=1';
     if( $sql_hash != $peregrine->session->getAlnum('sql_conditions_hash') ){
         $total_results = 0;
         if( !defined('WEB_UI_DEBUG') || ( defined('WEB_UI_DEBUG') && !WEB_UI_DEBUG ) ){
-            $count_sql = str_replace("SELECT *", "SELECT COUNT(id)", $sql);
+            $count_sql = "SELECT COUNT(*)" . $sql;
             $statement = $db->query($count_sql);
             while($row = $statement->fetch()) {
                 $total_results = $row[0];
@@ -203,6 +210,8 @@ $response = array(
 $offset = ($response['curr_page']-1)*$response['per_page'];
 $sql .= ' LIMIT '.$offset.','.$response['per_page'];
 
+// Merge sql
+$sql = $select . $sql;
 
 if( defined('WEB_UI_DEBUG') && WEB_UI_DEBUG ){
     print $sql;

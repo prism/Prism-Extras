@@ -7,7 +7,7 @@ $(function(){
                 $('#loading').hide();
                 for(r in resp.results){
 
-                    data = resp.results[r].data;
+                    var data = resp.results[r].data;
 
                     if( typeof resp.results[r].data === "object" && resp.results[r].data != null ){;
                         data = "";
@@ -17,12 +17,13 @@ $(function(){
                     }
 
                     var tr = '<tr>';
+                    tr += '<td>'+resp.results[r].id+'</td>';
                     tr += '<td>'+resp.results[r].world+'</td>';
                     tr += '<td>'+resp.results[r].x+' '+resp.results[r].y+' '+resp.results[r].z+'</td>';
-                    tr += '<td>'+resp.results[r].action_type+'</td>';
+                    tr += '<td>'+resp.results[r].action+'</td>';
                     tr += '<td>'+resp.results[r].player+'</td>';
                     tr += '<td>'+(data === null ? '' : data)+'</td>';
-                    tr += '<td>'+resp.results[r].action_time+'</td>';
+                    tr += '<td>'+resp.results[r].epoch+'</td>';
                     tr += '</tr>'
 
                     $('.table tbody').append(tr);
