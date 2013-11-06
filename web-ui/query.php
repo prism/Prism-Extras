@@ -26,11 +26,11 @@ $qb->join('LEFT JOIN prism_data_extra ex ON ex.data_id = d.id');
     }
 
     // Coordinates
-    if(!$peregrine->post->isEmpty('x') && !$peregrine->post->isEmpty('y') && !$peregrine->post->isEmpty('z')){
+    if(!$peregrine->post->isInt('x') && !$peregrine->post->isInt('y') && !$peregrine->post->isInt('z')){
         $x = $peregrine->post->getInt('x');
         $y = $peregrine->post->getInt('y');
         $z = $peregrine->post->getInt('z');
-        if(!$peregrine->post->isEmpty('radius')){
+        if(!$peregrine->post->isInt('radius')){
             $radius = $peregrine->post->getInt('radius');
             $qb->where( '( prism_data.x BETWEEN '.($x-$radius) . ' AND '.($x+$radius).' )' );
             $qb->where( '( prism_data.x BETWEEN '.($x-$radius) . ' AND '.($x+$radius).' )' );
