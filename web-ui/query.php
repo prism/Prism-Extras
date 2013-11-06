@@ -32,13 +32,13 @@ $qb->join('LEFT JOIN prism_data_extra ex ON ex.data_id = d.id');
         $z = $peregrine->post->getInt('z');
         if(!$peregrine->post->isInt('radius')){
             $radius = $peregrine->post->getInt('radius');
-            $qb->where( '( prism_data.x BETWEEN '.($x-$radius) . ' AND '.($x+$radius).' )' );
-            $qb->where( '( prism_data.x BETWEEN '.($x-$radius) . ' AND '.($x+$radius).' )' );
-            $qb->where( '( prism_data.z BETWEEN '.($z-$radius) . ' AND '.($z+$radius).' )' );
+            $qb->where( '( d.x BETWEEN '.($x-$radius) . ' AND '.($x+$radius).' )' );
+            $qb->where( '( d.x BETWEEN '.($x-$radius) . ' AND '.($x+$radius).' )' );
+            $qb->where( '( d.z BETWEEN '.($z-$radius) . ' AND '.($z+$radius).' )' );
         } else {
-            $qb->where( 'prism_data.x = '.$x );
-            $qb->where( 'prism_data.y = '.$y );
-            $qb->where( 'prism_data.z = '.$z );
+            $qb->where( 'd.x = '.$x );
+            $qb->where( 'd.y = '.$y );
+            $qb->where( 'd.z = '.$z );
         }
     }
 
