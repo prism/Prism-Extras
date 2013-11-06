@@ -6,6 +6,7 @@ prismWebUi = function(){
     var loading = $('#loading');
     var ol = $('.meta ol');
     var curr_page_li = $('#curr_page');
+    var tmpl_action_row = $('#action-row').html();
 
     $('#submit').click(function(){
         curr_page_li.val( 1 );
@@ -48,30 +49,11 @@ prismWebUi = function(){
 
         var jqXHR = $.post('query.php', $(this).serialize(), function(resp){
             if(resp.results.length > 0){
+                
                 ajaxStop();
-                for(r in resp.results){
 
-                    var data = resp.results[r].data;
-
-                    if( typeof resp.results[r].data === "object" && resp.results[r].data != null ){;
-                        data = "";
-                        $.each(resp.results[r].data, function(k,v){
-                            data += k + ": " + v + "<br/>";
-                        });
-                    }
-
-                    var tr = '<tr>';
-                    tr += '<td>'+resp.results[r].id+'</td>';
-                    tr += '<td>'+resp.results[r].world+'</td>';
-                    tr += '<td>'+resp.results[r].x+' '+resp.results[r].y+' '+resp.results[r].z+'</td>';
-                    tr += '<td>'+resp.results[r].action+'</td>';
-                    tr += '<td>'+resp.results[r].player+'</td>';
-                    tr += '<td>'+(data === null ? '' : data)+'</td>';
-                    tr += '<td>'+resp.results[r].epoch+'</td>';
-                    tr += '</tr>';
-
-                    tbody.append(tr);
-                }
+                // Build data, append view
+                tbody.html( _.template(tmpl_action_row,{actions:resp.results}) );
 
                 // Set meta
                 $('.meta span:first-child').text(resp.total_results);
