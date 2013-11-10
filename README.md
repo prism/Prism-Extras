@@ -40,17 +40,6 @@ Prism is truly in a class of its own.
 
 [Video Tutorial 3: More on Rollbacks](http://www.youtube.com/watch?v=oHBXYzv7vWs)
 
-## Donate to Vive
-
-
-[![alt text][2]][1]
-
-  [1]: https://www.paypal.com/cgi-bin/webscr?return=http%3A%2F%2Fdev.bukkit.org%2Fserver-mods%2Fprism%2F&cn=Add+special+instructions+to+the+addon+author%28s%29&business=botsko%40gmail.com&bn=PP-DonationsBF%3Abtn_donateCC_LG.gif%3ANonHosted&cancel_return=http%3A%2F%2Fdev.bukkit.org%2Fserver-mods%2Fprism%2F&lc=US&item_name=Prism+%28from+Bukkit.org%29&cmd=_donations&rm=1&no_shipping=1&currency_code=USD
-  [2]: http://botsko.s3.amazonaws.com/paypal_donate.gif
-
-Hey, I'm **viveleroi** and I'm responsible for 99% of Prism, the WebUI, the website, the documentation, responding to comments, IRC, and snowy tickets. But I also have a job and a family. Prism, and the rest of my plugins take an incalculable amount of time and that's hard to manage without any pay.
-
-So please, *make a donation and make it easier for me to continue with these amazing plugins*.
 
 ## Features Overview
 
@@ -59,14 +48,25 @@ So please, *make a donation and make it easier for me to continue with these ama
 - Fully configurable wand system - 3 mode choices and per-player personalization means it will work exactly how you want.
 - Rollback or restore events directly, or with a preview mode first.
 - Extremely configurable
-- Works for Bukkit, Spigot, MCPC+, etc - handles as best as possible on modded servers.
+- Works for Bukkit, Spigot, MCPC+, etc
 - Safe command defaults (can be configured), very clean and fun-to-use chat messages.
 - Smartest rollback/restore engine ever.
 - A dozen extra grief management features that *NO* other rollback plugin has.
 - Extremely fast. Takes a pounding. 
 - Extremely configurable.
 - Dozens of extra features you don't get from other plugins.
-- **Requires MySQL** for best performance. sqlite support available and stable.
+- **Requires MySQL** for best performance.
+
+## Unmatched FTB Server Support
+
+We've worked hard with the MCPC+ team to build amazing mod block/item tracking support into Prism. Including, but not limited to:
+
+- Track contents of mod containers and blocks
+- Tracking `container-*`, `item-insert`, `item-remove`, and other item actions for modded containers.
+- Additional tracking of TileEntity data for modded containers
+
+**You must use recent builds of MCPC+, and MCPC-specific builds of Prism**
+
 
 ## Features Detail
 
@@ -156,6 +156,7 @@ So please, *make a donation and make it easier for me to continue with these ama
 
 ### Technical
 
+- Prism 2 supports a vastly superior database design - 77% faster, 25% smaller than Prism 1
 - Multi-threaded queue system for tracking events, combined with a batch recording system makes event recording happen quickly and with minimal impact to your server.
 - Block r/r/p are queued for large changes to reduce chances of impacting the main thread.
 - Extremely smart database design with a lot of time invested in structure optimization, query performance testing, and more.
@@ -191,6 +192,7 @@ http://creativecommons.org/licenses/by-nc-sa/3.0/us/
 Prism, designed with experience from using competing products on DHMC, and dealing with nearly 19k players in a year and a half. 
 
 - viveleroi (*Creator, Lead Dev*)
+- bloodmc (*Assistance with MCPC+ special compatibility*)
 - nasonfish (*Contributor*)
 - YeaItsMe (*Release QA*)
 - nasonfish, Natman93, YeaItsMe, mafoan (*Alpha Testers*)
@@ -198,4 +200,16 @@ Prism, designed with experience from using competing products on DHMC, and deali
 - WorldEdit block logging [#1](https://github.com/LogBlock/LogBlock/tree/master/src/main/java/de/diddiz/worldedit ) based on work by [Ammaraskar](https://github.com/ammaraskar )
 - [Metrics](http://mcstats.org) class Copyright 2011 Tyler Blair. All rights reserved.
 - Artwork by [LegendarySoldier](http://legendary-soldier.deviantart.com/)
+
+## Donate to Vive
+
+[![alt text][2]][1]
+
+  [1]: https://www.paypal.com/cgi-bin/webscr?return=http%3A%2F%2Fdev.bukkit.org%2Fserver-mods%2Fprism%2F&cn=Add+special+instructions+to+the+addon+author%28s%29&business=botsko%40gmail.com&bn=PP-DonationsBF%3Abtn_donateCC_LG.gif%3ANonHosted&cancel_return=http%3A%2F%2Fdev.bukkit.org%2Fserver-mods%2Fprism%2F&lc=US&item_name=Prism+%28from+Bukkit.org%29&cmd=_donations&rm=1&no_shipping=1&currency_code=USD
+  [2]: http://botsko.s3.amazonaws.com/paypal_donate.gif
+
+Hey, I'm **viveleroi** and I'm responsible for 99% of Prism, the WebUI, the website, the documentation, responding to comments, IRC, and snowy tickets. But I also have a job and a family. Prism, and the rest of my plugins take an incalculable amount of time and that's hard to manage without any pay.
+
+So please, *make a donation and make it easier for me to continue with these amazing plugins*.
+
 
