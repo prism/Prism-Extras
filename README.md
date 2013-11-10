@@ -2,7 +2,7 @@
 
 *An incredible plugin for rollbacks, restores, and more.*
 
-Prism is the ultimate grief management (rollbacks, restores, etc) plugin for your server. It's amazingly fast, versatile, and a pleasure to use. Prism tracks 65+ events, boasts a vastly superior rollback engine, and offers tons of extra features. 
+Prism is the ultimate grief management (rollbacks, restores, etc) plugin for your server. It's amazingly fast, versatile, and a pleasure to use. Prism tracks 72+ events, boasts a vastly superior rollback engine, and offers tons of extra features. 
 
 Prism is truly in a class of its own.
 
@@ -43,7 +43,7 @@ Prism is truly in a class of its own.
 
 ## Features Overview
 
-- Prism tracks 65 (and growing) different player, entity, and world events.
+- Prism tracks 72 (and growing) different player, entity, and world events.
 - Multiple tools and commands let you see exactly what happened.
 - Fully configurable wand system - 3 mode choices and per-player personalization means it will work exactly how you want.
 - Rollback or restore events directly, or with a preview mode first.
@@ -72,7 +72,7 @@ We've worked hard with the MCPC+ team to build amazing mod block/item tracking s
 
 ### Events and Lookup
 
-- Tracks 65+ player, entity, and world events.
+- Tracks 72+ player, entity, and world events.
 - Includes block changes, container access, item inserts/remove/pickups/drops, entity deaths, shearing, vehicle events, and a LOT more.
 - Related events tracked to causing player like blocks falling, blocks detaching, trees growing, and much more.
 - Smart logging and rollback of important related data like sign text, sheep color, wolf owner, animal age, villager profession, etc
