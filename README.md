@@ -1,6 +1,6 @@
 #Prism
 
-*An incredible plugin for rollbacks, restores, and more.*
+*An incredible plugin for rollbacks, restores, and more. Tracking so good, the NSA stole our name*
 
 Prism is the ultimate grief management (rollbacks, restores, etc) plugin for your server. It's amazingly fast, versatile, and a pleasure to use. Prism tracks 72+ events, boasts a vastly superior rollback engine, and offers tons of extra features. 
 
@@ -30,7 +30,7 @@ Prism is truly in a class of its own.
 - [Prism Bug Tracker](https://snowy-evening.com/botsko/prism/ )
 
 
-## Some Videos
+## Tutorial & Highlight Videos
 
 [Intro & Demo Video (Pre-Beta)](http://www.youtube.com/watch?v=3b6DQQvBp30)
 
@@ -39,6 +39,16 @@ Prism is truly in a class of its own.
 [Video Tutorial 2: Rollbacks](http://www.youtube.com/watch?v=IRr-4r_LS2I)
 
 [Video Tutorial 3: More on Rollbacks](http://www.youtube.com/watch?v=oHBXYzv7vWs)
+
+[Woopra Gaming Tutorial: Prism](https://www.youtube.com/watch?v=64Zzmm-1Zpg )
+
+[French Tutorial](https://www.youtube.com/watch?v=vwa41KtUauU )
+
+[Minecraft Monday - Prism Tutorial](https://www.youtube.com/watch?v=cyFL-4k-OL8 )
+
+[Prism Comparison vs LogBlock](https://www.youtube.com/watch?v=HzYLGrHPidU )
+
+[Prism Tests](https://www.youtube.com/watch?v=nFGjMDU0VeA) *Outdated*
 
 
 ## Features Overview
@@ -58,6 +68,8 @@ Prism is truly in a class of its own.
 - **Requires MySQL** for best performance.
 
 ## Unmatched FTB Server Support
+
+*Available in Prism 2*
 
 We've worked hard with the MCPC+ team to build amazing mod block/item tracking support into Prism. Including, but not limited to:
 
@@ -180,6 +192,8 @@ Here's a quick list of known plugins that use the Prism 1.5+ API in some form:
 
 IRC: irc.esper.net #prism
 
+This is the best place to get help. If we're not there, you need to leave the tab open until someone can reply.
+
 ## License 
 
 Attribution-NonCommercial-ShareAlike 3.0 United States
@@ -201,6 +215,16 @@ Prism, designed with experience from using competing products on DHMC, and deali
 - [Metrics](http://mcstats.org) class Copyright 2011 Tyler Blair. All rights reserved.
 - Artwork by [LegendarySoldier](http://legendary-soldier.deviantart.com/)
 
+### Metrics
+
+This plugin utilizes Hidendra's plugin metrics system, which, if enabled, anonymously tracks the following about your server at mcstats.org: A unique identifier, server java version, online mode, plugin & server versions, OS version/name and architecture, cpu core count, player counts. 
+
+This information is used purely to help inform our technical decisions and boost our egos with how many people are enjoying our work.
+
+Opting out of this service can be done by editing plugins/Plugin Metrics/config.yml and changing opt-out to true.
+
+
+
 ## Donate to Vive
 
 [![alt text][2]][1]
@@ -213,3 +237,8 @@ Hey, I'm **viveleroi** and I'm responsible for 99% of Prism, the WebUI, the webs
 So please, *make a donation and make it easier for me to continue with these amazing plugins*.
 
 
+## Comments Closed
+
+We don't allow comments only because too many people try to begin conversations asking for help when IRC or the issue tracker are far better places for help.
+
+Thanks
