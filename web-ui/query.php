@@ -10,14 +10,18 @@ if(!$auth->checkToken($token,$peregrine->session->getRaw('token'))){
     exit;
 }
 
+if (!defined('MYSQL_PREFIX')) {
+    define('MYSQL_PREFIX', 'prism_'); // Old config files may not have the constant defined yet.
+}
+
 // Build query
 $qb = new QueryBuilder();
 $qb->select('id, epoch, action, player, world, x, y, z, block_id, block_subid, old_block_id, old_block_subid, data');
-$qb->from('prism_data','d');
-$qb->join('INNER JOIN prism_players p ON p.player_id = d.player_id');
-$qb->join('INNER JOIN prism_actions a ON a.action_id = d.action_id');
-$qb->join('INNER JOIN prism_worlds w ON w.world_id = d.world_id');
-$qb->join('LEFT JOIN prism_data_extra ex ON ex.data_id = d.id');
+$qb->from(MYSQL_PREFIX . 'data','d');
+$qb->join('INNER JOIN ' . MYSQL_PREFIX . 'players p ON p.player_id = d.player_id');
+$qb->join('INNER JOIN ' . MYSQL_PREFIX . 'actions a ON a.action_id = d.action_id');
+$qb->join('INNER JOIN ' . MYSQL_PREFIX . 'worlds w ON w.world_id = d.world_id');
+$qb->join('LEFT JOIN ' . MYSQL_PREFIX . 'data_extra ex ON ex.data_id = d.id');
 
     // World
     if(!$peregrine->post->isEmpty('world')){
