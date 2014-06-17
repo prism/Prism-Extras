@@ -25,6 +25,7 @@ define("MYSQL_USERNAME", "root");
 define("MYSQL_PASSWORD", "");
 define("MYSQL_DATABASE", "minecraft");
 define("MYSQL_PORT", 3306);
+define("MYSQL_PREFIX", "prism_");
 
 // Default MySQL query sorting
 define("DEFAULT_ORDER_BY", '');
