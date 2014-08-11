@@ -239,7 +239,13 @@ if(!$peregrine->post->isEmpty('username')){
                     <td><%= a.x %> <%= a.y %> <%= a.z %></td>
                     <td><%= a.action %></td>
                     <td><%= a.player %></td>
-                    <td><%= a.data %></td>
+                    <td>
+                        <% if( typeof a.data === "object"){ _.each(a.data, function(val){ %>
+                            <%= val %>
+                        <% }); } else { %>
+                            <%= a.data %>
+                        <% } %>
+                    </td>
                     <td><%= a.epoch %></td>
                 </tr>
             <% }); %>
