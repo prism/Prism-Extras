@@ -37,7 +37,7 @@ $qb->join('LEFT JOIN ' . MYSQL_PREFIX . 'data_extra ex ON ex.data_id = d.id');
         if(!$peregrine->post->isInt('radius',false,false)){
             $radius = $peregrine->post->getInt('radius');
             $qb->where( '( d.x BETWEEN '.($x-$radius) . ' AND '.($x+$radius).' )' );
-            $qb->where( '( d.x BETWEEN '.($x-$radius) . ' AND '.($x+$radius).' )' );
+            $qb->where( '( d.y BETWEEN '.($y-$radius) . ' AND '.($y+$radius).' )' );
             $qb->where( '( d.z BETWEEN '.($z-$radius) . ' AND '.($z+$radius).' )' );
         } else {
             $qb->where( 'd.x = '.$x );
