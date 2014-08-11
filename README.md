@@ -186,7 +186,7 @@ Here's a quick list of known plugins that use the Prism 1.5+ API in some form:
 - [AsyncWorldedit](http://dev.bukkit.org/server-mods/async_worldedit/ )
 - [MCPainter](http://dev.bukkit.org/server-mods/mcpainter/)
 - [BlockSaver](http://dev.bukkit.org/bukkit-plugins/blocksaver/)
-
+- [BlocksHub](http://dev.bukkit.org/bukkit-plugins/blockshub/)
        
 ## Get Help
 
@@ -214,6 +214,14 @@ Prism, designed with experience from using competing products on DHMC, and deali
 - WorldEdit block logging [#1](https://github.com/LogBlock/LogBlock/tree/master/src/main/java/de/diddiz/worldedit ) based on work by [Ammaraskar](https://github.com/ammaraskar )
 - [Metrics](http://mcstats.org) class Copyright 2011 Tyler Blair. All rights reserved.
 - Artwork by [LegendarySoldier](http://legendary-soldier.deviantart.com/)
+
+
+### PSTE.me
+
+PSTE.me is a paste-bin/code snippet sharing site. Prism allows you to create pastes of lookup results by using the `-paste` flag. Anyone may then view the paste contents at the url provided. You must visit [PSTE.me](http://pste.me), create a free account, and visit your account page for your free API key.
+
+If you have specifically enabled PSTE.me integration in the Prism config, lookup results for the command specified will be sent to PSTE.me (a website we control) as a public paste using your required API key/username. PSTE.me does not collect any information about your server or Prism install aside from the API keys provided and paste contents.
+
 
 ### Metrics
 
